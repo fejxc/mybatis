@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+<!--    指定properties文件位置，从类路径根开始-->
+    <properties resource="jdbc.properties"/>
+
+
+<!-- settings:控制mybatis全局行为   -->
+    <settings>
+<!--        设置mybatis输出日志，打印控制台-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+
+<!--    定义别名    -->
+
+    <typeAliases>
+<!--        第一种   -->
+<!--        一个类型一个自定义的类型 type:自定义类型的全限定名称 alias：自定义别名   -->
+<!--        <typeAlias type="com.sunyun.domain.Student" alias="stu"/>-->
+<!--        <typeAlias type="com.sunyun.vo.ViewStudent" alias="vstu" />-->
+
+<!--        第二种  使用的居多 ，设置简单  -->
+<!--        name是包名，这个包里的所有类，类名就是别名（不区分大小写）-->
+        <package name="com.sunyun.domain"/>
+        <package name="com.sunyun.vo"/>
+
+
+
+    </typeAliases>
+
+<!--配置分页插件-->
+    <plugins>
+        <!-- com.github.pagehelper为PageHelper类所在包名 -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+
+        </plugin>
+    </plugins>
+
+<environments default="development">
+<!-- environment id="development" 必须是development 如果是dev会报错   -->
+    <environment id="development">
+        <transactionManager type="JDBC"></transactionManager>
+        <dataSource type="POOLED">
+            <property name="driver" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.user}"/>
+            <property name="password" value="${jdbc.passwd}"/>
+        </dataSource>
+    </environment>
+</environments>
+
+    <mappers>
+        <!-- 映射文件的位置 -->
+<!--    <mapper resource="com/sunyun/dao/StudentDao.xml" />-->
+
+<!--        name:xml文件(mapper文件）所在包名，这个包名所有的xml文件都可以加载给mybatis
+    使用要求：mapper文件名称和接口名称一样，区分大小写
+            mapper文件和dao接口在同一个目录下                   要求掌握
+ -->
+        <package name="com.sunyun.dao"/>
+    </mappers>
+</configuration>
+<!--transactionManager:mybatis的事务管理类型 type：JDBC -->
+<!--dataSource：数据源，连接数据库 type：数据类型，POOLED是连接池-->
+<!--mydev 本机的-->
+<!--online 服务器-->
+
+<!--sql Mapper sql映射文件-->
+<!--一个Mapper标签指定一个文件位置，从类路径开始的路径信息，target/classes（类路径）-->

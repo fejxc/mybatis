@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyun.dao.StudentDao">
+    <select id="selectStudents" resultType="com.sunyun.domain.Student">
+        select * from student order by id
+    </select>
+
+    <insert id="insertStudents">
+        insert into student values (#{id},#{name},#{email},#{age})
+    </insert>
+</mapper>
+
+<!--namespace:命名空间，dao接口的全限定名称-->
+<!--id:你要执行sql语句位置的标志，mybatis会根据这个id来找到sql语句，可以自定义，要求使用接口中的方法名称-->
+<!--resultType:表示接口类型的，是sql语句执行后的ResultSet，遍历这个ResultSet得到java对象的类型,写类的全限定名称-->
+<!--
+
+    while(rs.next()){
+    Student st = new Student();
+    st.set....
+    st.set....
+-->

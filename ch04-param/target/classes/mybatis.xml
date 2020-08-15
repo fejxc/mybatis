@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<!-- settings:控制mybatis全局行为   -->
+    <settings>
+<!--        设置mybatis输出日志，打印控制台-->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+
+<environments default="development">
+<!-- environment id="development" 必须是development 如果是dev会报错   -->
+    <environment id="development">
+        <transactionManager type="JDBC"></transactionManager>
+        <dataSource type="POOLED">
+            <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="url" value="jdbc:mysql://localhost:3306/springdb"/>
+            <property name="username" value="root"/>
+            <property name="password" value="980107sy"/>
+        </dataSource>
+    </environment>
+</environments>
+
+    <mappers>
+        <!-- 映射文件的位置 -->
+    <mapper resource="com/sunyun/dao/StudentDao.xml" />
+    </mappers>
+</configuration>
+<!--transactionManager:mybatis的事务管理类型 type：JDBC -->
+<!--dataSource：数据源，连接数据库 type：数据类型，POOLED是连接池-->
+<!--mydev 本机的-->
+<!--online 服务器-->
+
+<!--sql Mapper sql映射文件-->
+<!--一个Mapper标签指定一个文件位置，从类路径开始的路径信息，target/classes（类路径）-->

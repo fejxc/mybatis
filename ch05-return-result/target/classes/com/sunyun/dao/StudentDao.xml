@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyun.dao.StudentDao">
+   <select id="selectStudentById" resultType="com.sunyun.domain.Student">
+       select * from student where id=#{studentid}
+   </select>
+
+    <select id="selectMultiParam" resultType="student">
+         select * from student where name=#{myname} or age=#{myage}
+    </select>
+
+    <select id="selectStudentReturnViewStudent" resultType="ViewStudent">
+        select id,name from student where id=#{sid}
+    </select>
+
+<!--    sql执行后返回一行一列    -->
+<!--    <select id="countStudent" resultType="int">-->
+<!--   resultType 建议使用全限定名称   -->
+    <select id="countStudent" resultType="java.lang.Integer">
+        select count(*) from student
+    </select>
+
+<!--    返回map-->
+<!--    列名是map的key，列值是map的value-->
+<!--    返回map只能返回一行，不然会报错  推荐使用返回对象-->
+    <select id="selectMapById" resultType="map">
+        select id,name,email from student where id=#{stuid};
+    </select>
+
+
+<!--
+           列名和属性名不一样：第一种方式 推荐使用
+    使用resultMap
+    1)先定义resultMap标签
+    2)在select标签，使用resultMap来引用1的定义
+    id是自定义名字
+    type是java类型的全限定名称
+
+-->
+    <resultMap id="studentMap" type="com.sunyun.domain.Student">
+<!-- 主键列  column列名    propert：java类型属性名   -->
+        <id column="id" property="id"/>
+<!--        非主键列-->
+        <result column="name" property="name"/>
+        <result column="email" property="email"/>
+        <result column="age" property="age"/>
+    </resultMap>
+    <select id="selectAllStudent" resultMap="studentMap">
+        select * from student
+    </select>
+
+
+
+
+    <resultMap id="studentMap2" type="com.sunyun.domain.MyStudent">
+        <!-- 主键列  column列名    propert：java类型属性名   -->
+        <id column="id" property="stuid"/>
+        <!--        非主键列-->
+        <result column="name" property="stuname"/>
+        <result column="email" property="stuemail"/>
+        <result column="age" property="stuage"/>
+    </resultMap>
+    <select id="selectMyStudent" resultMap="studentMap2">
+          select * from student
+    </select>
+
+<!--    列名和属性名不一样：第二种方式
+resultType的默认原则：同名的列值赋值给同名的属性，使用列别名,别名是java对象的属性名
+-->
+    <select id="selectDifferentColProperty" resultType="com.sunyun.domain.MyStudent">
+         select id as stuid,name as stuname,email as stuemail,age as stuage from student
+    </select>
+
+
+<!--    第一种 like，java代码中指定 like的内容 -->
+<select id="selectLikeOne" resultType="com.sunyun.domain.Student">
+          select * from student where name like #{name}
+</select>
+    <!--    第二种 like，在mapper中拼接 -->
+    <select id="selectLikeTwo" resultType="com.sunyun.domain.Student">
+        select * from student where name like "%" #{name} "%"
+    </select>
+</mapper>
+
+<!--resultMap 和resultType 使用的时候二选一  resultMap解决列名和属性吗不一样-->

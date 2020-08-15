@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunyun.dao.StudentDao">
+
+<!--    定义sql的片段  可以是sql语句，字段，属性 ....-->
+    <sql id="studentSql">
+         select id,name,email,age from student
+    </sql>
+
+
+<!--if-->
+    <select id="selectStudentIf" resultType="com.sunyun.domain.Student">
+       <include refid="studentSql"></include>
+        where
+        <if test="name!=null and name!=''">
+            name=#{name}
+        </if>
+        <if test="age>0">
+            or age>#{age}
+        </if>
+    </select>
+
+<!--    where-->
+    <select id="selectStudentWhere" resultType="com.sunyun.domain.Student">
+        <include refid="studentSql"></include>
+        <where>
+            <if test="name!=null and name!=''">
+                name=#{name}
+            </if>
+            <if test="age>0">
+                or age>#{age}
+            </if>
+        </where>
+    </select>
+
+<!--    foreach 使用1 list<Integer>-->
+<!-- collection:接口方法中参数类型，如果是数组使用array，如果是list集合使用list   -->
+<!--  item：自定义，表示数组或者集合的成员变量  -->
+<!--  open：循环开始的字符  close：循环结束时的字符  separator：集合成员之间的分隔符-->
+    <select id="selectForeachOne" resultType="com.sunyun.domain.Student">
+        <include refid="studentSql"></include> where id in
+        <foreach collection="list" item="myid" open="(" close=")" separator=",">
+            #{myid}
+        </foreach>
+    </select>
+
+    <!--    foreach 使用2 list<Student>-->
+<!--    stu.id -->
+<!--    <select id="selectForeachTwo" resultType="com.sunyun.domain.Student">-->
+<!--        select id,name,email,age from student where id in-->
+<!--        <foreach collection="list" item="stu" open="(" close=")" separator=",">-->
+<!--            #{stu.id}-->
+<!--        </foreach>-->
+<!--    </select>-->
+    <select id="selectForeachTwo" resultType="com.sunyun.domain.Student">
+        <include refid="studentSql"></include> where id in (
+        <foreach collection="list" item="stu" >
+            #{stu.id},
+        </foreach>
+        -1)
+    </select>
+
+<!--    查询所有    -->
+    <select id="selectAll" resultType="com.sunyun.domain.Student">
+        select * from student order by id
+    </select>
+
+</mapper>
+
